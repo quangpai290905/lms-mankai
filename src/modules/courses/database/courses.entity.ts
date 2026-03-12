@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
   ManyToMany,
 } from 'typeorm';
-import { Class } from '../../classes/database/class.entity';
+import { Class } from '../../temp_classes/database/class.entity';
 
 export enum CourseLevel {
   BEGINNER = 'Beginner',

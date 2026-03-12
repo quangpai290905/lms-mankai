@@ -15,7 +15,7 @@ import { LessonVideoModule } from './modules/lesson-video/lesson-video.module';
 import { PostsModule } from './modules/posts/posts.module';
 import { StudentModule } from './modules/student/student.module';
 import { SubmissionModule } from './modules/submission/submission.module';
-import { ClassesModule } from './modules/classes/classes.module';
+import { ClassesModule } from './modules/temp_classes/classes.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { ProgressModule } from './modules/progress/progress.module';
 import { AiChatModule } from './modules/ai-chat/ai-chat.module';

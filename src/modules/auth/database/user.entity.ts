@@ -9,8 +9,8 @@ import {
   OneToMany,
   ManyToMany,
 } from 'typeorm';
-import { Enrollment } from '../../classes/database/enrollment.entity';
-import { Class } from '../../classes/database/class.entity';
+import { Enrollment } from '../../temp_classes/database/enrollment.entity';
+import { Class } from '../../temp_classes/database/class.entity';
 
 @Entity('users')
 export class User {

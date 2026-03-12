@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { User } from 'src/modules/auth/database/user.entity';
 import { LessonItem } from 'src/modules/lessons/database/lesson-item.entity';
-import { Class } from 'src/modules/classes/database/class.entity'; // 👈 Import Class
+import { Class } from 'src/modules/temp_classes/database/class.entity'; // 👈 Import Class
 
 export enum SubmissionStatus {
   PENDING = 'pending',

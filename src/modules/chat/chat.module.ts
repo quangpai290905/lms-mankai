@@ -8,7 +8,7 @@ import { Conversation } from './database/conversation.entity';
 import { Message } from './database/message.entity';
 import { User } from '../auth/database/user.entity';
 // 👇 Import Enrollment
-import { Enrollment } from '../classes/database/enrollment.entity';
+import { Enrollment } from '../temp_classes/database/enrollment.entity';
 
 @Module({
   imports: [

@@ -5,7 +5,7 @@ import { SubmissionService } from './submission.service';
 import { SubmissionRepository } from './repositories/submission.repository';
 import { Submission } from './database/submission.entity';
 import { LessonItem } from '../lessons/database/lesson-item.entity';
-import { Class } from '../classes/database/class.entity'; // 👈 Import Class
+import { Class } from '../temp_classes/database/class.entity'; // 👈 Import Class
 
 @Module({
   imports: [

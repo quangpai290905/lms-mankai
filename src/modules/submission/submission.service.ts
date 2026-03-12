@@ -17,7 +17,7 @@ import { SearchSubmissionDto } from './dtos/request/search-submission.dto';
 import { SubmissionResponseDto } from './dtos/response/submission-response.dto';
 import { PaginatedSubmissionsResponseDto } from './dtos/response/paginated-submissions-response.dto';
 import { GradeSubmissionDto } from './dtos/request/grade-submission.dto';
-import { Class } from 'src/modules/classes/database/class.entity';
+import { Class } from 'src/modules/temp_classes/database/class.entity';
 
 @Injectable()
 export class SubmissionService {

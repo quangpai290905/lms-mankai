@@ -5,8 +5,8 @@ import { Conversation } from './database/conversation.entity';
 import { Message } from './database/message.entity';
 import { User } from '../auth/database/user.entity';
 // 👇 1. Import đúng Enrollment và Class status từ file bạn cung cấp
-import { Enrollment } from '../classes/database/enrollment.entity';
-import { ClassStatus } from '../classes/database/class.entity';
+import { Enrollment } from '../temp_classes/database/enrollment.entity';
+import { ClassStatus } from '../temp_classes/database/class.entity';
 @Injectable()
 export class ChatService {
   constructor(
