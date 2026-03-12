@@ -7,7 +7,7 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { CreateSessionDto } from './dtos/create-session.dto';
@@ -28,7 +28,7 @@ import { UserRole } from 'src/constant/enum';
 @ApiTags('04. Sessions')
 @ApiBearerAuth('JWT-auth')
 // Giữ lại Guards ở cấp Controller để đảm bảo tất cả request đều phải login và qua bước kiểm tra role
-@UseGuards(AuthGuard('jwt'), RolesGuard) 
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 @Controller('sessions')
 export class SessionsController {
   constructor(private readonly sessionsService: SessionsService) {}
@@ -74,7 +74,11 @@ export class SessionsController {
   @Roles(UserRole.ADMIN, UserRole.TEACHER) // Chỉ Admin và Teacher được sửa
   @ApiOperation({ summary: 'Cập nhật thông tin một chương' })
   @ApiParam({ name: 'id', description: 'ID (UUID) của chương', type: String })
-  @ApiResponse({ status: 200, description: 'Cập nhật thành công.', type: Session })
+  @ApiResponse({
+    status: 200,
+    description: 'Cập nhật thành công.',
+    type: Session,
+  })
   @ApiResponse({ status: 401, description: 'Chưa xác thực.' })
   @ApiResponse({ status: 404, description: 'Không tìm thấy chương này.' })
   @ApiResponse({ status: 403, description: 'Không có quyền truy cập.' })

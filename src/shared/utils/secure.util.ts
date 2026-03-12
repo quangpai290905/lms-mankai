@@ -11,9 +11,8 @@ export const SecureUtils = {
   hashPassword: (password: string) => {
     return bcrypt.hash(password, saltOrRounds);
   },
-  
+
   comparePasswords: (password: string, hash: string) => {
     return bcrypt.compare(password, hash);
   },
 };
-

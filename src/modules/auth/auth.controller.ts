@@ -1,20 +1,25 @@
 // src/modules/auth/auth.controller.ts
-import { 
-  Controller, 
-  Post, 
-  Body, 
-  UseGuards, 
-  HttpCode, 
-  HttpStatus, 
-  Request 
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  HttpCode,
+  HttpStatus,
+  Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterAuthDto } from './dtos/register-auth.dto';
 import { LoginAuthDto } from './dtos/login-auth.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
-import { JwtRefreshGuard } from 'src/shared/guard/jwt-refresh.guard'; 
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+import { JwtRefreshGuard } from 'src/shared/guard/jwt-refresh.guard';
 // Đảm bảo import JwtAuthGuard (guard check Access Token)
-import { JwtAuthGuard } from '../../shared/guard/auth.guard'; 
+import { JwtAuthGuard } from '../../shared/guard/auth.guard';
 
 @ApiTags('01. Auth')
 @Controller('auth')
@@ -31,20 +36,20 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   @ApiOperation({ summary: 'Đăng nhập vào hệ thống' })
-  @ApiResponse({ 
-    status: 200, 
-    description: 'Đăng nhập thành công, trả về access_token và refresh_token.' 
+  @ApiResponse({
+    status: 200,
+    description: 'Đăng nhập thành công, trả về access_token và refresh_token.',
   })
   login(@Body() loginAuthDto: LoginAuthDto) {
     return this.authService.login(loginAuthDto);
   }
 
-  @UseGuards(JwtRefreshGuard) 
+  @UseGuards(JwtRefreshGuard)
   @Post('refresh')
-  @ApiBearerAuth('JWT-auth') 
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Làm mới Access Token' })
   refreshToken(@Request() req) {
-    const user = req.user; 
+    const user = req.user;
     return this.authService.refreshToken(user);
   }
 

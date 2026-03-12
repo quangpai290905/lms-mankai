@@ -1,10 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 
-
-export function authenticateJWT(req: Request, res: Response, next: NextFunction) {
+export function authenticateJWT(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   // Lấy token từ header hoặc query parameter hoặc cookie
-  const token = req.header('Authorization')?.split(' ')[1] || req.query.token || req.cookies.token;
+  const token =
+    req.header('Authorization')?.split(' ')[1] ||
+    req.query.token ||
+    req.cookies.token;
 
   if (token) {
     // Giải mã token và kiểm tra tính hợp lệ

@@ -11,7 +11,7 @@ export class Kanji {
   kanji: string;
 
   // 🔹 Cho phép null vì có chữ có Onyomi, có chữ không
-  @Column({ nullable: true }) 
+  @Column({ nullable: true })
   onyomi: string;
 
   // 🔹 Cho phép null

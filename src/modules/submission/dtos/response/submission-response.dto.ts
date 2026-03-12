@@ -5,7 +5,7 @@ export class SubmissionResponseDto {
   id: string;
   studentId: string;
   student?: StudentResponseDto;
-  
+
   classId?: string; // 👈 Thêm ID lớp
   className?: string; // 👈 Thêm tên lớp (nếu cần hiển thị)
 
@@ -26,11 +26,11 @@ export class SubmissionResponseDto {
     if (submission.student) {
       this.student = new StudentResponseDto(submission.student);
     }
-    
+
     // Map thông tin Class
     this.classId = submission.classId;
     if (submission.class) {
-        this.className = submission.class.name;
+      this.className = submission.class.name;
     }
 
     this.gitLink = submission.gitLink;
@@ -42,7 +42,7 @@ export class SubmissionResponseDto {
     this.createdAt = submission.createdAt;
     this.updatedAt = submission.updatedAt;
     this.lessonItemId = submission.lessonItemId;
-    
+
     if (submission.lessonItem) {
       this.lessonItemTitle = submission.lessonItem.title || 'Bài tập không tên';
     }

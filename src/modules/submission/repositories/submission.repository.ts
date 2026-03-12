@@ -13,7 +13,10 @@ export class SubmissionRepository {
     private submissionRepository: Repository<Submission>,
   ) {}
 
-  async create(createSubmissionDto: CreateSubmissionDto, studentId: string): Promise<Submission> {
+  async create(
+    createSubmissionDto: CreateSubmissionDto,
+    studentId: string,
+  ): Promise<Submission> {
     const submission = this.submissionRepository.create({
       ...createSubmissionDto,
       studentId,
@@ -21,7 +24,9 @@ export class SubmissionRepository {
     return this.submissionRepository.save(submission);
   }
 
-  async findAll(searchDto: SearchSubmissionDto): Promise<{ submissions: Submission[]; total: number }> {
+  async findAll(
+    searchDto: SearchSubmissionDto,
+  ): Promise<{ submissions: Submission[]; total: number }> {
     const {
       search,
       studentId,
@@ -60,11 +65,15 @@ export class SubmissionRepository {
 
     // 👈 2. QUAN TRỌNG: Thêm điều kiện lọc đúng bài học
     if (lessonItemId) {
-      queryBuilder.andWhere('submission.lessonItemId = :lessonItemId', { lessonItemId });
+      queryBuilder.andWhere('submission.lessonItemId = :lessonItemId', {
+        lessonItemId,
+      });
     }
 
     if (gitLink) {
-      queryBuilder.andWhere('submission.gitLink LIKE :gitLink', { gitLink: `%${gitLink}%` });
+      queryBuilder.andWhere('submission.gitLink LIKE :gitLink', {
+        gitLink: `%${gitLink}%`,
+      });
     }
 
     if (status) {

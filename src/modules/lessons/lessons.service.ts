@@ -39,9 +39,9 @@ export class LessonsService {
 
   findAll(): Promise<Lesson[]> {
     // Thêm relation 'session' nếu cần lọc ở frontend (nhưng logic mới đã dùng session để load tree rồi)
-    return this.lessonRepo.find({ 
+    return this.lessonRepo.find({
       order: { order: 'ASC' },
-      relations: ['session'] 
+      relations: ['session'],
     });
   }
 
@@ -60,21 +60,25 @@ export class LessonsService {
   async update(id: string, updateLessonDto: UpdateLessonDto): Promise<Lesson> {
     const lesson = await this.findOne(id);
     // Loại bỏ sessionId khỏi updateDto nếu có, để tránh lỗi đổi session
-    const { ...rest } = updateLessonDto; 
+    const { ...rest } = updateLessonDto;
     Object.assign(lesson, rest);
     return this.lessonRepo.save(lesson);
   }
 
   async remove(id: string): Promise<void> {
     const result = await this.lessonRepo.delete(id);
-    if (result.affected === 0) throw new NotFoundException(`Lesson #${id} not found`);
+    if (result.affected === 0)
+      throw new NotFoundException(`Lesson #${id} not found`);
   }
 
   // 👆👆👆 HẾT PHẦN KHÔI PHỤC 👆👆👆
 
   // --- LOGIC ITEMS ---
 
-  async addItem(lessonId: string, dto: CreateLessonItemDto): Promise<LessonItem> {
+  async addItem(
+    lessonId: string,
+    dto: CreateLessonItemDto,
+  ): Promise<LessonItem> {
     const lesson = await this.lessonRepo.findOneBy({ id: lessonId });
     if (!lesson) throw new NotFoundException('Lesson not found');
 
@@ -86,7 +90,10 @@ export class LessonsService {
     return this.itemRepo.save(newItem);
   }
 
-  async updateItem(itemId: string, dto: UpdateLessonItemDto): Promise<LessonItem> {
+  async updateItem(
+    itemId: string,
+    dto: UpdateLessonItemDto,
+  ): Promise<LessonItem> {
     const item = await this.itemRepo.findOneBy({ id: itemId });
     if (!item) throw new NotFoundException('Item not found');
 

@@ -11,7 +11,7 @@ import { Enrollment } from './database/enrollment.entity'; // 👈 Import mới
 @Module({
   imports: [
     // 👇 Thêm Enrollment vào mảng này
-    TypeOrmModule.forFeature([Class, Course, User, Enrollment]) 
+    TypeOrmModule.forFeature([Class, Course, User, Enrollment]),
   ],
   controllers: [ClassesController],
   providers: [ClassesService],

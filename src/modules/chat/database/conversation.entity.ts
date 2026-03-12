@@ -1,5 +1,14 @@
 // src/modules/chat/database/conversation.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../auth/database/user.entity'; // Kiểm tra lại đường dẫn User của bạn
 import { Message } from './message.entity'; // 👇 Import Message từ file mới

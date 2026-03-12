@@ -74,7 +74,7 @@ export function DefaultValue(_target: Object, defaultValue: any) {
         _target,
       );
     }
-    if (!meta.some(data => data.key === propertyKey)) {
+    if (!meta.some((data) => data.key === propertyKey)) {
       meta.push({
         key: propertyKey,
         defaultValue: defaultValue,

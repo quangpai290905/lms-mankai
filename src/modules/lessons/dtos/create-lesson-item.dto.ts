@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID, IsNumber } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+  IsNumber,
+} from 'class-validator';
 import { LessonItemType } from '../database/lesson-item.entity';
 
 export class CreateLessonItemDto {
@@ -25,7 +32,10 @@ export class CreateLessonItemDto {
   videoUrl?: string;
 
   // --- Dành cho Text / Essay ---
-  @ApiProperty({ description: 'Nội dung HTML hoặc Đề bài luận', required: false })
+  @ApiProperty({
+    description: 'Nội dung HTML hoặc Đề bài luận',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   textContent?: string;

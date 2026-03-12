@@ -1,8 +1,16 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsOptional, IsString, ValidateNested, IsArray, IsBoolean, IsNumber } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+  IsArray,
+  IsBoolean,
+  IsNumber,
+} from 'class-validator';
 
 import { QuestionType } from 'src/constant/enum';
-
 
 class MultiAnswerDto {
   @ApiProperty()
@@ -15,7 +23,6 @@ class MultiAnswerDto {
   isCorrect: boolean;
 }
 
-
 class FillInBlankAnswerDto {
   @ApiProperty()
   @IsNotEmpty()
@@ -25,18 +32,18 @@ class FillInBlankAnswerDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
-  index: number; 
+  index: number;
 }
 
 export class CreateBankQuestionDto {
-  @ApiProperty() 
-  @IsNotEmpty() 
-  @IsString() 
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   question_text: string;
 
-  @ApiPropertyOptional() 
-  @IsOptional() 
-  @IsString() 
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
   category?: string;
 
   @ApiProperty({ enum: QuestionType, default: QuestionType.MULTIPLE_CHOICE })
@@ -44,31 +51,29 @@ export class CreateBankQuestionDto {
   @IsEnum(QuestionType)
   type: QuestionType;
 
-  
-  @ApiProperty({ 
+  @ApiProperty({
     description: 'Danh sách đáp án, cấu trúc phụ thuộc vào type',
     example: [
       { answer: 'Đáp án A', isCorrect: true },
-      { answer: 'Đáp án B', isCorrect: false }
-    ]
+      { answer: 'Đáp án B', isCorrect: false },
+    ],
   })
   @IsArray()
   @IsNotEmpty()
-  
   answers: MultiAnswerDto[] | FillInBlankAnswerDto[];
 }
 
 export class UpdateBankQuestionDto {
   @ApiPropertyOptional() @IsOptional() @IsString() question_text?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() category?: string;
-  
-  @ApiPropertyOptional({ enum: QuestionType }) 
-  @IsOptional() 
-  @IsEnum(QuestionType) 
+
+  @ApiPropertyOptional({ enum: QuestionType })
+  @IsOptional()
+  @IsEnum(QuestionType)
   type?: QuestionType;
 
-  @ApiPropertyOptional() 
-  @IsOptional() 
+  @ApiPropertyOptional()
+  @IsOptional()
   @IsArray()
   answers?: any[];
 }

@@ -10,4 +10,3 @@ import { Post } from './post.entity';
   providers: [PostsService],
 })
 export class PostsModule {}
-

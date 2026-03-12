@@ -10,7 +10,10 @@ import { Request } from 'express';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
+export class JwtRefreshStrategy extends PassportStrategy(
+  Strategy,
+  'jwt-refresh',
+) {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
@@ -22,12 +25,14 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
       // Dùng secret của REFRESH TOKEN
       secretOrKey: configService.get<string>('JWT_REFRESH_SECRET'),
       // Bắt buộc request phải được truyền vào hàm validate
-      passReqToCallback: true, 
+      passReqToCallback: true,
     });
   }
 
-  async validate(req: Request, payload: { sub: string; email: string; role: string }) {
-    
+  async validate(
+    req: Request,
+    payload: { sub: string; email: string; role: string },
+  ) {
     const user = await this.usersRepository.findOneBy({ user_id: payload.sub });
     if (!user) {
       throw new UnauthorizedException();
@@ -38,7 +43,9 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
 
     // Kiểm tra xem RT có trong DB và có khớp không
     if (!user.hashed_refresh_token) {
-      throw new UnauthorizedException('Access Denied. No refresh token on record.');
+      throw new UnauthorizedException(
+        'Access Denied. No refresh token on record.',
+      );
     }
 
     const isTokenMatching = await bcrypt.compare(
@@ -49,7 +56,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
     if (!isTokenMatching) {
       throw new UnauthorizedException('Access Denied. Token mismatch.');
     }
-    
+
     // Xóa password và rt hash trước khi trả về user
     delete user.password;
     delete user.hashed_refresh_token;

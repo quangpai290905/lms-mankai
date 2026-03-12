@@ -10,7 +10,6 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-
 class AssignmentItemDto {
   @ApiProperty()
   @IsNotEmpty()
@@ -22,7 +21,6 @@ class AssignmentItemDto {
   @IsNumber()
   order_index: number;
 }
-
 
 export class AssignQuestionDto {
   @ApiProperty({

@@ -22,7 +22,7 @@ export enum SubmissionStatus {
 @Entity('submissions')
 // 👇 QUAN TRỌNG: Khóa unique bao gồm student + lessonItem + class
 // Giúp học viên có thể nộp lại bài này ở lớp khác (học lại)
-@Unique(['studentId', 'lessonItemId', 'classId']) 
+@Unique(['studentId', 'lessonItemId', 'classId'])
 export class Submission {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -34,8 +34,8 @@ export class Submission {
   lessonItemId: string;
 
   // 👇 THÊM CỘT NÀY
-  @Column({ type: 'uuid', nullable: true }) 
-  classId: string; 
+  @Column({ type: 'uuid', nullable: true })
+  classId: string;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'studentId' })
@@ -67,7 +67,7 @@ export class Submission {
   feedback?: string;
 
   @Column({ type: 'decimal', precision: 4, scale: 2, nullable: true })
-  score: number; 
+  score: number;
 
   @Column({ type: 'uuid', nullable: true })
   reviewerId?: string;

@@ -12,4 +12,3 @@ import { User } from '../auth/database/user.entity';
   exports: [StudentService, StudentRepository],
 })
 export class StudentModule {}
-

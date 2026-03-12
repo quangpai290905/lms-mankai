@@ -9,13 +9,21 @@ export class CourseDto {
   @ApiProperty({ example: 'Tiếng Anh cơ bản', description: 'Tên khóa học' })
   title: string;
 
-  @ApiProperty({ example: 'Khóa học dành cho người mới bắt đầu', description: 'Mô tả khóa học', nullable: true })
+  @ApiProperty({
+    example: 'Khóa học dành cho người mới bắt đầu',
+    description: 'Mô tả khóa học',
+    nullable: true,
+  })
   description?: string;
 
   @ApiProperty({ example: 0, description: 'Giá khóa học' })
   price: number;
 
-  @ApiProperty({ example: 'https://...', description: 'Thumbnail', nullable: true })
+  @ApiProperty({
+    example: 'https://...',
+    description: 'Thumbnail',
+    nullable: true,
+  })
   thumbnail?: string;
 
   @ApiProperty({ example: 'Beginner', description: 'Level khóa học' })
@@ -23,7 +31,10 @@ export class CourseDto {
 }
 
 export class StudentCoursesResponseDto {
-  @ApiProperty({ type: [CourseDto], description: 'Danh sách khóa học của học viên' })
+  @ApiProperty({
+    type: [CourseDto],
+    description: 'Danh sách khóa học của học viên',
+  })
   courses: CourseDto[];
 
   constructor(courses: Course[]) {

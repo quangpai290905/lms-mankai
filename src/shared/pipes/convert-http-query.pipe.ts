@@ -83,7 +83,7 @@ function convertToArrayNumber(listRequireData: string[], value: Object) {
         value[key] = [+value[key]];
         continue;
       }
-      value[key] = (value[key] as any[]).map(data => +data);
+      value[key] = (value[key] as any[]).map((data) => +data);
     }
   }
 }

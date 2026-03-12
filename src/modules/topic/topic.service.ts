@@ -1,7 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -31,7 +28,8 @@ export class TopicService {
   }) {
     const { q, level, page = 1, limit = 10 } = params;
 
-    const query = this.topicRepo.createQueryBuilder('topic')
+    const query = this.topicRepo
+      .createQueryBuilder('topic')
       .loadRelationCountAndMap('topic.vocabCount', 'topic.vocabularies');
 
     if (q) {
@@ -84,9 +82,9 @@ export class TopicService {
   // 🧹 HARD DELETE (Xóa cứng)
   async remove(id: string) {
     const topic = await this.findOne(id);
-    
-    // Sử dụng remove() thay vì softRemove(). 
-    // Vì bên Entity Vocabulary bạn đã set { onDelete: 'CASCADE' } 
+
+    // Sử dụng remove() thay vì softRemove().
+    // Vì bên Entity Vocabulary bạn đã set { onDelete: 'CASCADE' }
     // nên toàn bộ vocabulary con sẽ tự động bị xóa theo.
     await this.topicRepo.remove(topic);
 

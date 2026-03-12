@@ -33,15 +33,15 @@ export class PostsService {
     const skip = (page - 1) * limit;
 
     // 4. Xây dựng điều kiện 'where'
-    const whereCondition = search 
+    const whereCondition = search
       ? { title: Like(`%${search}%`) } // Tìm kiếm theo 'title' (hoặc 'content')
       : {}; // Nếu không có search thì để trống
 
     // 5. Dùng findAndCount để lấy cả dữ liệu và tổng số
     const [results, total] = await this.postsRepository.findAndCount({
       where: whereCondition,
-      take: limit,  // Giới hạn (limit)
-      skip: skip,   // Bỏ qua (offset)
+      take: limit, // Giới hạn (limit)
+      skip: skip, // Bỏ qua (offset)
       order: { createdAt: 'DESC' }, // Sắp xếp (tùy chọn)
     });
 

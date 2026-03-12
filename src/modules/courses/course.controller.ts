@@ -35,7 +35,11 @@ export class CoursesController {
   @Post()
   @Roles(UserRole.ADMIN, UserRole.TEACHER)
   @ApiOperation({ summary: 'Tạo một khóa học mới' })
-  @ApiResponse({ status: 201, description: 'Tạo khóa học thành công.', type: Course })
+  @ApiResponse({
+    status: 201,
+    description: 'Tạo khóa học thành công.',
+    type: Course,
+  })
   @ApiResponse({ status: 403, description: 'Không có quyền truy cập.' })
   create(@Body() createCourseDto: CreateCourseDto) {
     // Đã bỏ @Request() req và tham số req.user
@@ -74,7 +78,9 @@ export class CoursesController {
 
   @Get(':id/full-structure')
   @Roles(UserRole.ADMIN, UserRole.TEACHER, UserRole.STUDENT)
-  @ApiOperation({ summary: 'Lấy toàn bộ cấu trúc bài học (Session -> Lesson -> Items)' })
+  @ApiOperation({
+    summary: 'Lấy toàn bộ cấu trúc bài học (Session -> Lesson -> Items)',
+  })
   getFullStructure(@Param('id') id: string) {
     return this.coursesService.findFullCurriculum(id);
   }

@@ -9,7 +9,9 @@ export type CloudinaryUploadResponse = {
 
 @Injectable()
 export class UploadService {
-  async uploadImage(file: Express.Multer.File): Promise<CloudinaryUploadResponse> {
+  async uploadImage(
+    file: Express.Multer.File,
+  ): Promise<CloudinaryUploadResponse> {
     if (!file) {
       throw new BadRequestException('File is required');
     }

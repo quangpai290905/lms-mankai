@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn, Index } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  Index,
+} from 'typeorm';
 import { User } from '../../auth/database/user.entity';
 import { Quiz } from './quiz.entity';
 // 👇 Import LessonItem
@@ -6,20 +14,19 @@ import { LessonItem } from '../../lessons/database/lesson-item.entity';
 
 @Entity('quiz_results')
 export class QuizResult {
-  @PrimaryGeneratedColumn('uuid') 
-  result_id: string; 
+  @PrimaryGeneratedColumn('uuid')
+  result_id: string;
 
   @Index()
-  @Column({ type: 'uuid' }) 
-  quiz_id: string; 
+  @Column({ type: 'uuid' })
+  quiz_id: string;
 
   @Index()
   @Column()
   user_id: string;
-  
-  
+
   @Index()
-  @Column({ type: 'uuid', nullable: true }) 
+  @Column({ type: 'uuid', nullable: true })
   lesson_item_id: string;
 
   @Column('decimal', { precision: 5, scale: 2 })

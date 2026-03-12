@@ -21,19 +21,18 @@ export class ProgressController {
     return this.service.get(query);
   }
 
-  
   @Get('class-summary')
   @ApiOperation({ summary: 'Lấy bảng tổng hợp tiến độ của một lớp' })
   async getClassSummary(
     @Query('classId') classId: string,
     @Query('courseIds') courseIds: string, // Frontend gửi chuỗi "id1,id2"
-    @Query('studentIds') studentIds: string // Frontend gửi chuỗi "id1,id2"
+    @Query('studentIds') studentIds: string, // Frontend gửi chuỗi "id1,id2"
   ) {
     if (!classId || !courseIds || !studentIds) return {};
-    
+
     const cIds = courseIds.split(',');
     const sIds = studentIds.split(',');
-    
+
     return this.service.getClassProgress(classId, sIds, cIds);
   }
 }

@@ -9,9 +9,14 @@ import {
   Query,
   UseGuards,
   ParseIntPipe,
-  ParseArrayPipe
+  ParseArrayPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
 import { KanjiService } from './kanji.service';
@@ -40,19 +45,28 @@ export class KanjiController {
   @ApiOperation({ summary: 'Tra cứu danh sách Kanji' })
   @ApiQuery({ name: 'page', required: false, example: 1 })
   @ApiQuery({ name: 'limit', required: false, example: 20 })
-  @ApiQuery({ name: 'jlpt', required: false, example: 'N5', description: 'Lọc theo cấp độ' })
-  @ApiQuery({ name: 'search', required: false, description: 'Tìm theo chữ, âm on/kun' })
+  @ApiQuery({
+    name: 'jlpt',
+    required: false,
+    example: 'N5',
+    description: 'Lọc theo cấp độ',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    description: 'Tìm theo chữ, âm on/kun',
+  })
   findAll(
     @Query('page') page?: number,
     @Query('limit') limit?: number,
     @Query('jlpt') jlpt?: string,
     @Query('search') search?: string,
   ) {
-    return this.kanjiService.findAll({ 
-      page: Number(page) || 1, 
-      limit: Number(limit) || 20, 
-      jlpt, 
-      search 
+    return this.kanjiService.findAll({
+      page: Number(page) || 1,
+      limit: Number(limit) || 20,
+      jlpt,
+      search,
     });
   }
 
@@ -76,7 +90,7 @@ export class KanjiController {
   @Post('import')
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles(UserRole.ADMIN) 
+  @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Import hàng loạt Kanji (JSON Array)' })
   importBulk(
     @Body(new ParseArrayPipe({ items: CreateKanjiDto })) dtos: CreateKanjiDto[],

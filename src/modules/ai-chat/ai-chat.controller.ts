@@ -17,7 +17,7 @@ export class AiChatController {
   async talk(@Body() body: { sessionId: number; message: string }) {
     return this.aiChatService.chat(body.sessionId, body.message);
   }
-  
+
   @Get('history')
   getHistory(@Query('userId') userId: string) {
     return this.aiChatService.getUserHistory(userId);
@@ -30,7 +30,10 @@ export class AiChatController {
     @Res() res: Response,
   ) {
     try {
-      const audioStream = await this.aiChatService.getTextToSpeech(text, lang || 'ja');
+      const audioStream = await this.aiChatService.getTextToSpeech(
+        text,
+        lang || 'ja',
+      );
       res.set({
         'Content-Type': 'audio/mpeg',
         'Transfer-Encoding': 'chunked',
@@ -40,9 +43,9 @@ export class AiChatController {
       res.status(500).send('Error generating audio');
     }
   }
-  
+
   @Get(':id')
   getSession(@Param('id') id: string) {
-      return this.aiChatService.getSession(+id);
+    return this.aiChatService.getSession(+id);
   }
 }

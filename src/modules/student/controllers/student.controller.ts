@@ -1,6 +1,31 @@
 // src/modules/users/controllers/student.controller.ts
-import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, Request, HttpCode, HttpStatus, UseInterceptors, UploadedFile, BadRequestException} from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiQuery, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Request,
+  HttpCode,
+  HttpStatus,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+  ApiParam,
+  ApiQuery,
+  ApiBearerAuth,
+  ApiConsumes,
+} from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { StudentService } from '../services/student.service';
 import { CreateStudentDto } from '../dtos/request/create-student.dto';
@@ -49,7 +74,12 @@ export class StudentController {
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Import user từ file Excel' })
   @ApiConsumes('multipart/form-data')
-  @ApiQuery({ name: 'role', enum: UserRole, required: true, description: 'Role cần import (Student/Teacher)' }) // 👈 Thêm docs cho Swagger
+  @ApiQuery({
+    name: 'role',
+    enum: UserRole,
+    required: true,
+    description: 'Role cần import (Student/Teacher)',
+  }) // 👈 Thêm docs cho Swagger
   @ApiBody({
     schema: {
       type: 'object',
@@ -60,8 +90,8 @@ export class StudentController {
   })
   @UseInterceptors(FileInterceptor('file'))
   async importStudents(
-      @UploadedFile() file: Express.Multer.File,
-      @Query('role') role: UserRole = UserRole.STUDENT // 👈 Nhận query param
+    @UploadedFile() file: Express.Multer.File,
+    @Query('role') role: UserRole = UserRole.STUDENT, // 👈 Nhận query param
   ) {
     if (!file) throw new BadRequestException('Vui lòng upload file Excel');
     // Gọi service với role
@@ -117,7 +147,10 @@ export class StudentController {
   @Patch('profile/me')
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('JWT-auth')
-  updateProfile(@Request() req: AuthenticatedRequest, @Body() dto: UpdateProfileDto) {
+  updateProfile(
+    @Request() req: AuthenticatedRequest,
+    @Body() dto: UpdateProfileDto,
+  ) {
     return this.studentService.updateProfile(req.user!.user_id, dto);
   }
 
@@ -125,7 +158,10 @@ export class StudentController {
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('JWT-auth')
   @HttpCode(HttpStatus.OK)
-  changePassword(@Request() req: AuthenticatedRequest, @Body() dto: ChangePasswordDto) {
+  changePassword(
+    @Request() req: AuthenticatedRequest,
+    @Body() dto: ChangePasswordDto,
+  ) {
     return this.studentService.changePassword(req.user!.user_id, dto);
   }
 

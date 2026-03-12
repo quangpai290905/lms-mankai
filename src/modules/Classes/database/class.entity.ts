@@ -40,9 +40,9 @@ export class Class {
   status: ClassStatus;
 
   // Quan hệ nhiều-nhiều với Course
-  @ManyToMany(() => Course, (course) => course.classes) 
-@JoinTable({ name: 'class_courses' })
-courses: Course[];
+  @ManyToMany(() => Course, (course) => course.classes)
+  @JoinTable({ name: 'class_courses' })
+  courses: Course[];
 
   // Quan hệ nhiều-nhiều với User (giáo viên)
   @ManyToMany(() => User)
@@ -50,7 +50,7 @@ courses: Course[];
   teachers: User[];
 
   // Quan hệ 1-nhiều với Enrollment
-  @OneToMany(() => Enrollment, enrollment => enrollment.class)
+  @OneToMany(() => Enrollment, (enrollment) => enrollment.class)
   enrollments: Enrollment[];
 
   @CreateDateColumn()

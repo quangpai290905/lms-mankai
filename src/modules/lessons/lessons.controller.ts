@@ -1,5 +1,15 @@
 // ✅ src/modules/lessons/lessons.controller.ts
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { LessonsService } from './lessons.service';
 import { CreateLessonDto } from './dtos/create-lesson.dto';
 import { UpdateLessonDto } from './dtos/update-lesson.dto';
@@ -39,7 +49,10 @@ export class LessonsController {
   @Patch(':id')
   @Roles(UserRole.ADMIN, UserRole.TEACHER)
   @ApiOperation({ summary: 'Cập nhật thông tin bài học (Tiêu đề, thứ tự)' })
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() updateLessonDto: UpdateLessonDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateLessonDto: UpdateLessonDto,
+  ) {
     return this.lessonsService.update(id, updateLessonDto);
   }
 
@@ -56,13 +69,19 @@ export class LessonsController {
 
   @Post(':id/items')
   @Roles(UserRole.ADMIN, UserRole.TEACHER)
-  addItem(@Param('id', ParseUUIDPipe) lessonId: string, @Body() dto: CreateLessonItemDto) {
+  addItem(
+    @Param('id', ParseUUIDPipe) lessonId: string,
+    @Body() dto: CreateLessonItemDto,
+  ) {
     return this.lessonsService.addItem(lessonId, dto);
   }
 
   @Patch('items/:itemId')
   @Roles(UserRole.ADMIN, UserRole.TEACHER)
-  updateItem(@Param('itemId', ParseUUIDPipe) itemId: string, @Body() dto: UpdateLessonItemDto) {
+  updateItem(
+    @Param('itemId', ParseUUIDPipe) itemId: string,
+    @Body() dto: UpdateLessonItemDto,
+  ) {
     return this.lessonsService.updateItem(itemId, dto);
   }
 

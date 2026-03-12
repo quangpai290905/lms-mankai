@@ -21,13 +21,15 @@ export class SessionsService {
 
     const course = await this.courseRepository.findOneBy({ id: courseId });
     if (!course) {
-      throw new NotFoundException(`Không tìm thấy khóa học với ID: ${courseId}`);
+      throw new NotFoundException(
+        `Không tìm thấy khóa học với ID: ${courseId}`,
+      );
     }
 
     // 👇 TÍNH TOÁN ORDER TỰ ĐỘNG 👇
     const lastSession = await this.sessionRepository.findOne({
       where: { course: { id: courseId } },
-      order: { order: 'DESC' }
+      order: { order: 'DESC' },
     });
 
     const newOrder = lastSession ? lastSession.order + 1 : 1;
@@ -52,8 +54,8 @@ export class SessionsService {
       where: { id },
       relations: ['course', 'lessons', 'lessons.items'], // <-- SỬA: Lấy thêm 'lessons' để biết session có bài gì
       order: {
-        lessons: { order: 'ASC' } // Sắp xếp bài học bên trong
-      }
+        lessons: { order: 'ASC' }, // Sắp xếp bài học bên trong
+      },
     });
     if (!session) {
       throw new NotFoundException(`Không tìm thấy chương với ID #${id}`);
@@ -62,10 +64,13 @@ export class SessionsService {
   }
 
   // SỬA: Thay `any` bằng `UpdateSessionDto`
-  async update(id: string, updateSessionDto: UpdateSessionDto): Promise<Session> {
-    const session = await this.sessionRepository.preload({ 
-      id, 
-      ...updateSessionDto 
+  async update(
+    id: string,
+    updateSessionDto: UpdateSessionDto,
+  ): Promise<Session> {
+    const session = await this.sessionRepository.preload({
+      id,
+      ...updateSessionDto,
     });
     if (!session) {
       throw new NotFoundException(`Không tìm thấy chương với ID #${id}`);
@@ -75,7 +80,7 @@ export class SessionsService {
 
   async remove(id: string): Promise<Session> {
     const session = await this.findOne(id);
-    // Lưu ý: Nếu Database chưa set ON DELETE CASCADE, 
+    // Lưu ý: Nếu Database chưa set ON DELETE CASCADE,
     // lệnh này sẽ lỗi nếu Session đang chứa Lesson.
     // Hãy đảm bảo entity Session có @OneToMany(..., { cascade: true })
     return this.sessionRepository.remove(session);

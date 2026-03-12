@@ -12,7 +12,7 @@ import { RegisterAuthDto } from './dtos/register-auth.dto';
 import { LoginAuthDto } from './dtos/login-auth.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config'; 
+import { ConfigService } from '@nestjs/config';
 import { UserRole } from 'src/constant/enum';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class AuthService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private jwtService: JwtService,
-    private configService: ConfigService, 
+    private configService: ConfigService,
   ) {}
 
   async register(registerAuthDto: RegisterAuthDto): Promise<User> {
@@ -34,11 +34,14 @@ export class AuthService {
 
     let finalStudentCode = studentCode;
     if (finalStudentCode) {
-       const existingCode = await this.usersRepository.findOneBy({ student_code: finalStudentCode });
-       if (existingCode) throw new ConflictException('Student code already exists');
+      const existingCode = await this.usersRepository.findOneBy({
+        student_code: finalStudentCode,
+      });
+      if (existingCode)
+        throw new ConflictException('Student code already exists');
     } else {
-       const timestamp = Date.now().toString().slice(-6);
-       finalStudentCode = `SV${timestamp}`;
+      const timestamp = Date.now().toString().slice(-6);
+      finalStudentCode = `SV${timestamp}`;
     }
 
     const salt = await bcrypt.genSalt();
@@ -57,10 +60,10 @@ export class AuthService {
     delete newUser.password;
     return newUser;
   }
- 
+
   async login(
     loginAuthDto: LoginAuthDto,
-  ): Promise<{ access_token: string; refresh_token: string }> { 
+  ): Promise<{ access_token: string; refresh_token: string }> {
     const { email, password } = loginAuthDto;
 
     const user = await this.usersRepository.findOneBy({ email });
@@ -74,7 +77,7 @@ export class AuthService {
     }
 
     const payload = { email: user.email, sub: user.user_id, role: user.role };
-    
+
     const [access_token, refresh_token] = await Promise.all([
       this.jwtService.sign(payload, {
         secret: this.configService.get<string>('JWT_SECRET'),
@@ -88,21 +91,21 @@ export class AuthService {
 
     const salt = await bcrypt.genSalt();
     const hashedRt = await bcrypt.hash(refresh_token, salt);
-    
+
     await this.usersRepository.update(user.user_id, {
       hashed_refresh_token: hashedRt,
     });
 
     return { access_token, refresh_token };
   }
-  
+
   async refreshToken(user: User): Promise<{ access_token: string }> {
-    const payload = { 
-      email: user.email, 
-      sub: user.user_id, 
-      role: user.role 
+    const payload = {
+      email: user.email,
+      sub: user.user_id,
+      role: user.role,
     };
-    
+
     const access_token = this.jwtService.sign(payload, {
       secret: this.configService.get<string>('JWT_SECRET'),
       expiresIn: this.configService.get<string>('JWT_EXPIRES_IN'),
@@ -110,8 +113,6 @@ export class AuthService {
 
     return { access_token };
   }
-
-  // 🟢 MỚI: Hàm logout để xóa refresh token trong DB
   async logout(userId: string) {
     // Set hashed_refresh_token về null
     return this.usersRepository.update(userId, { hashed_refresh_token: null });

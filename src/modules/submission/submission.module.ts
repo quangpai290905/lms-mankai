@@ -10,7 +10,7 @@ import { Class } from '../classes/database/class.entity'; // 👈 Import Class
 @Module({
   imports: [
     // 👇 THÊM Class VÀO ĐÂY
-    TypeOrmModule.forFeature([Submission, LessonItem, Class]) 
+    TypeOrmModule.forFeature([Submission, LessonItem, Class]),
   ],
   controllers: [SubmissionController],
   providers: [SubmissionService, SubmissionRepository],

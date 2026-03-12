@@ -17,7 +17,7 @@ export class Enrollment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Class, cls => cls.enrollments, {
+  @ManyToOne(() => Class, (cls) => cls.enrollments, {
     onDelete: 'CASCADE',
     eager: false,
   })
@@ -27,7 +27,7 @@ export class Enrollment {
   @RelationId((enrollment: Enrollment) => enrollment.class)
   class_id: string;
 
-  @ManyToOne(() => User, user => user.enrollments, {
+  @ManyToOne(() => User, (user) => user.enrollments, {
     onDelete: 'CASCADE',
     eager: false,
   })

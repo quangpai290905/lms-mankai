@@ -15,8 +15,10 @@ import { QuestionType } from 'src/constant/enum'; // Import Enum Type
 export class QuizzesService {
   constructor(
     @InjectRepository(Quiz) private quizzesRepository: Repository<Quiz>,
-    @InjectRepository(QuizQuestion) private questionsRepository: Repository<QuizQuestion>,
-    @InjectRepository(QuizResult) private resultsRepository: Repository<QuizResult>,
+    @InjectRepository(QuizQuestion)
+    private questionsRepository: Repository<QuizQuestion>,
+    @InjectRepository(QuizResult)
+    private resultsRepository: Repository<QuizResult>,
     @InjectRepository(QuizQuestionAssignment)
     private assignmentRepository: Repository<QuizQuestionAssignment>,
     private dataSource: DataSource,
@@ -51,7 +53,9 @@ export class QuizzesService {
         if (questions.length !== questionIds.length) {
           const foundIds = questions.map((q) => q.question_id);
           const notFound = questionIds.filter((id) => !foundIds.includes(id));
-          throw new NotFoundException(`Questions not found: ${notFound.join(', ')}`);
+          throw new NotFoundException(
+            `Questions not found: ${notFound.join(', ')}`,
+          );
         }
         questionMap = new Map(questions.map((q) => [q.question_id, q]));
       }
@@ -77,8 +81,12 @@ export class QuizzesService {
     });
   }
 
-  async unassignQuestionFromQuiz(assignmentId: string): Promise<{ message: string }> {
-    const assignment = await this.assignmentRepository.findOneBy({ assignment_id: assignmentId });
+  async unassignQuestionFromQuiz(
+    assignmentId: string,
+  ): Promise<{ message: string }> {
+    const assignment = await this.assignmentRepository.findOneBy({
+      assignment_id: assignmentId,
+    });
     if (!assignment) throw new NotFoundException('Assignment not found');
 
     await this.assignmentRepository.remove(assignment);
@@ -90,22 +98,23 @@ export class QuizzesService {
     const quiz = await this.quizzesRepository.findOneBy({ quiz_id: id });
     if (!quiz) throw new NotFoundException(`Quiz with ID ${id} not found`);
 
-    const assignments = await this.assignmentRepository.createQueryBuilder('assignment')
+    const assignments = await this.assignmentRepository
+      .createQueryBuilder('assignment')
       .leftJoinAndSelect('assignment.question', 'question')
       .where('assignment.quiz_id = :quizId', { quizId: id })
       .orderBy('assignment.order_index', 'ASC')
       .getMany();
 
-    const questions = assignments.map(a => {
+    const questions = assignments.map((a) => {
       const questionData = a.question;
 
       // Xử lý ẩn đáp án đúng trong JSON answers
       if (!includeCorrectAnswers && questionData.answers) {
         // Map qua mảng answers và loại bỏ thuộc tính 'isCorrect'
-        questionData.answers = questionData.answers.map(ans => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { isCorrect, ...rest } = ans; 
-            return rest;
+        questionData.answers = questionData.answers.map((ans) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { isCorrect, ...rest } = ans;
+          return rest;
         });
       }
 
@@ -137,7 +146,9 @@ export class QuizzesService {
       if (!quiz) throw new NotFoundException(`Quiz with ID ${id} not found`);
 
       await entityManager.delete(QuizResult, { quiz_id: id });
-      await entityManager.delete(QuizQuestionAssignment, { quiz: { quiz_id: id } });
+      await entityManager.delete(QuizQuestionAssignment, {
+        quiz: { quiz_id: id },
+      });
       await entityManager.remove(quiz);
     });
     return { message: `Quiz with ID ${id} has been deleted` };
@@ -158,7 +169,9 @@ export class QuizzesService {
     const correctQuestions = quizAssignments.map((a) => a.question);
 
     if (correctQuestions.length === 0) {
-      throw new NotFoundException(`Quiz with ID ${quizId} not found or has no questions.`);
+      throw new NotFoundException(
+        `Quiz with ID ${quizId} not found or has no questions.`,
+      );
     }
 
     const validQuestionIds = correctQuestions.map((q) => q.question_id);
@@ -168,10 +181,15 @@ export class QuizzesService {
     submitQuizDto.answers.forEach((studentAnswer) => {
       if (!validQuestionIds.includes(studentAnswer.question_id)) return;
 
-      const question = correctQuestions.find((q) => q.question_id === studentAnswer.question_id);
-      
+      const question = correctQuestions.find(
+        (q) => q.question_id === studentAnswer.question_id,
+      );
+
       // Gọi hàm helper để kiểm tra đúng sai
-      if (question && this.checkAnswer(question, studentAnswer.selected_answer)) {
+      if (
+        question &&
+        this.checkAnswer(question, studentAnswer.selected_answer)
+      ) {
         correctAnswersCount++;
       }
     });
@@ -204,7 +222,7 @@ export class QuizzesService {
     return this.resultsRepository.find({
       where: whereCondition,
       relations: ['user'],
-      order: { score: 'DESC' }
+      order: { score: 'DESC' },
     });
   }
 
@@ -214,37 +232,47 @@ export class QuizzesService {
 
     // 1. Logic cho Trắc nghiệm (Multiple Choice)
     if (question.type === QuestionType.MULTIPLE_CHOICE) {
-       // userAnswer mong đợi là string (ví dụ: "Hà Nội") hoặc index, tùy FE gửi
-       // Ở đây giả định FE gửi text đáp án giống như trong DB
-       const correctOptions = question.answers
-         .filter((a: any) => a.isCorrect === true)
-         .map((a: any) => a.answer); // Lấy danh sách text các đáp án đúng
-       
-       // Kiểm tra xem user gửi lên có nằm trong list đáp án đúng không
-       return correctOptions.includes(userAnswer);
+      // userAnswer mong đợi là string (ví dụ: "Hà Nội") hoặc index, tùy FE gửi
+      // Ở đây giả định FE gửi text đáp án giống như trong DB
+      const correctOptions = question.answers
+        .filter((a: any) => a.isCorrect === true)
+        .map((a: any) => a.answer); // Lấy danh sách text các đáp án đúng
+
+      // Kiểm tra xem user gửi lên có nằm trong list đáp án đúng không
+      return correctOptions.includes(userAnswer);
     }
 
     // 2. Logic cho Điền từ (Fill in the blank)
     if (question.type === QuestionType.FILL_IN_THE_BLANK) {
-        // userAnswer mong đợi dạng: { index: 1, answer: "text" } hoặc mảng các object đó
-        // question.answers trong DB dạng: [{ index: 1, answer: "text" }]
-        
-        // Nếu user gửi mảng (nhiều chỗ trống)
-        if (Array.isArray(userAnswer)) {
-            // Logic: Phải đúng HẾT các ô trống mới tính điểm (strict mode)
-            // Hoặc có thể tính điểm thành phần (ở đây làm strict mode đơn giản)
-            const dbAnswers = question.answers as any[];
-            if (userAnswer.length !== dbAnswers.length) return false;
+      // userAnswer mong đợi dạng: { index: 1, answer: "text" } hoặc mảng các object đó
+      // question.answers trong DB dạng: [{ index: 1, answer: "text" }]
 
-            return userAnswer.every(uItem => {
-                const match = dbAnswers.find(d => d.index === uItem.index);
-                return match && match.answer.trim().toLowerCase() === uItem.answer.trim().toLowerCase();
-            });
-        } 
-        
-        // Nếu user gửi 1 object lẻ (trường hợp chỉ có 1 chỗ trống)
-        const dbAnswer = question.answers.find((a: any) => a.index === userAnswer.index);
-        return dbAnswer && dbAnswer.answer.trim().toLowerCase() === userAnswer.answer.trim().toLowerCase();
+      // Nếu user gửi mảng (nhiều chỗ trống)
+      if (Array.isArray(userAnswer)) {
+        // Logic: Phải đúng HẾT các ô trống mới tính điểm (strict mode)
+        // Hoặc có thể tính điểm thành phần (ở đây làm strict mode đơn giản)
+        const dbAnswers = question.answers as any[];
+        if (userAnswer.length !== dbAnswers.length) return false;
+
+        return userAnswer.every((uItem) => {
+          const match = dbAnswers.find((d) => d.index === uItem.index);
+          return (
+            match &&
+            match.answer.trim().toLowerCase() ===
+              uItem.answer.trim().toLowerCase()
+          );
+        });
+      }
+
+      // Nếu user gửi 1 object lẻ (trường hợp chỉ có 1 chỗ trống)
+      const dbAnswer = question.answers.find(
+        (a: any) => a.index === userAnswer.index,
+      );
+      return (
+        dbAnswer &&
+        dbAnswer.answer.trim().toLowerCase() ===
+          userAnswer.answer.trim().toLowerCase()
+      );
     }
 
     return false;

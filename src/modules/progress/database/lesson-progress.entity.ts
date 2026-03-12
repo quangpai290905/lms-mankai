@@ -7,7 +7,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Index,
-  JoinColumn
+  JoinColumn,
 } from 'typeorm';
 import { User } from 'src/modules/auth/database/user.entity';
 
@@ -49,7 +49,11 @@ export class LessonProgress {
   @Index()
   classId: string;
 
-  @Column({ type: 'enum', enum: LessonStatus, default: LessonStatus.IN_PROGRESS })
+  @Column({
+    type: 'enum',
+    enum: LessonStatus,
+    default: LessonStatus.IN_PROGRESS,
+  })
   status: LessonStatus;
 
   @Column({ type: 'int', default: 0 })
@@ -64,5 +68,3 @@ export class LessonProgress {
   @UpdateDateColumn()
   updatedAt: Date;
 }
-
-

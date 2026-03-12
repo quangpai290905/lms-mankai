@@ -1,4 +1,4 @@
-import { UserRole } from "src/constant/enum";
+import { UserRole } from 'src/constant/enum';
 
 export class StudentResponseDto {
   user_id: string;
@@ -30,4 +30,3 @@ export class StudentResponseDto {
     this.updatedAt = student.updatedAt;
   }
 }
-

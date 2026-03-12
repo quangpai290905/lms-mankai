@@ -1,5 +1,12 @@
 // ai-chat.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
 
 @Entity()
 export class AiChatSession {
@@ -7,8 +14,8 @@ export class AiChatSession {
   id: number;
 
   // 👇 SỬA Ở ĐÂY: đổi number thành string để lưu UUID
-  @Column() 
-  userId: string; 
+  @Column()
+  userId: string;
 
   @Column()
   topic: string;

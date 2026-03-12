@@ -1,8 +1,4 @@
-import {
-  IsString,
-  IsOptional,
-  IsPhoneNumber,
-} from 'class-validator';
+import { IsString, IsOptional, IsPhoneNumber } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdateProfileDto {
@@ -21,7 +17,10 @@ export class UpdateProfileDto {
   @IsString()
   address?: string;
 
-  @ApiPropertyOptional({ example: 'https://example.com/new-avatar.jpg', description: 'Link avatar' })
+  @ApiPropertyOptional({
+    example: 'https://example.com/new-avatar.jpg',
+    description: 'Link avatar',
+  })
   @IsOptional()
   @IsString()
   avatar?: string;
@@ -35,4 +34,3 @@ export class UpdateProfileDto {
   @IsString()
   gender?: string;
 }
-

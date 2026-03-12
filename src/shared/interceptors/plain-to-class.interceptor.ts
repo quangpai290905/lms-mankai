@@ -23,10 +23,10 @@ export class PlainToClassTransformInterceptor<T>
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<T> {
     return next.handle().pipe(
-      map(data => plainToClass(this.classType, data)),
-      map(data =>
+      map((data) => plainToClass(this.classType, data)),
+      map((data) =>
         from(validate(data as Object)).pipe(
-          map(error => {
+          map((error) => {
             console.log(error);
             if (error.length > 0) {
               console.log(error[0]?.children[0]);
@@ -36,7 +36,7 @@ export class PlainToClassTransformInterceptor<T>
           }),
         ),
       ),
-      mergeMap(data => data),
+      mergeMap((data) => data),
     );
   }
 }

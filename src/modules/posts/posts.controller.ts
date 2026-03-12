@@ -1,8 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { ApiQuery, ApiTags, ApiOperation, ApiBody, } from '@nestjs/swagger';
+import { ApiQuery, ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
 
 @ApiTags('12. Posts (Utility)')
 @Controller('posts')
@@ -17,9 +26,24 @@ export class PostsController {
   }
 
   @Get()
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Số trang' })
-  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Số lượng mỗi trang' })
-  @ApiQuery({ name: 'search', required: false, type: String, description: 'Từ khóa tìm kiếm' })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Số trang',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Số lượng mỗi trang',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String,
+    description: 'Từ khóa tìm kiếm',
+  })
   findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
@@ -51,4 +75,3 @@ export class PostsController {
     return this.postsService.remove(+id);
   }
 }
-

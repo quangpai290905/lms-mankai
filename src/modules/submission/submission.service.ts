@@ -8,7 +8,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, IsNull } from 'typeorm';
 import { SubmissionRepository } from './repositories/submission.repository';
 import { Submission, SubmissionStatus } from './database/submission.entity';
-import { LessonItem, LessonItemType } from '../lessons/database/lesson-item.entity';
+import {
+  LessonItem,
+  LessonItemType,
+} from '../lessons/database/lesson-item.entity';
 import { CreateSubmissionDto } from './dtos/request/create-submission.dto';
 import { SearchSubmissionDto } from './dtos/request/search-submission.dto';
 import { SubmissionResponseDto } from './dtos/response/submission-response.dto';
@@ -40,7 +43,9 @@ export class SubmissionService {
     const { lessonItemId, classId, gitLink, description } = createSubmissionDto;
 
     // 1. Check Class tồn tại
-    const classExists = await this.classRepository.findOneBy({ class_id: classId });
+    const classExists = await this.classRepository.findOneBy({
+      class_id: classId,
+    });
     if (!classExists) throw new NotFoundException('Lớp học không tồn tại.');
 
     // 2. Check bài tập
@@ -49,21 +54,25 @@ export class SubmissionService {
     });
     if (!lessonItem) throw new NotFoundException('Bài tập không tồn tại.');
     if (lessonItem.type !== LessonItemType.ESSAY) {
-      throw new BadRequestException('Chỉ được nộp bài cho bài tập tự luận (Essay).');
+      throw new BadRequestException(
+        'Chỉ được nộp bài cho bài tập tự luận (Essay).',
+      );
     }
 
     // 3. Check bài cũ (TRONG PHẠM VI LỚP HỌC NÀY)
     let submission = await this.submissionTypeOrmRepo.findOne({
-      where: { 
-        studentId, 
+      where: {
+        studentId,
         lessonItemId,
-        classId: classId // 👈 Quan trọng: Chỉ check trong lớp này
+        classId: classId, // 👈 Quan trọng: Chỉ check trong lớp này
       },
     });
 
     if (submission) {
       if (submission.status === SubmissionStatus.APPROVED) {
-        throw new BadRequestException('Bài tập này đã ĐẬU trong lớp này, không cần nộp lại.');
+        throw new BadRequestException(
+          'Bài tập này đã ĐẬU trong lớp này, không cần nộp lại.',
+        );
       }
       // Resubmit
       submission.gitLink = gitLink;
@@ -108,15 +117,15 @@ export class SubmissionService {
     }
 
     if (dto.status) submission.status = dto.status;
-    
+
     if (dto.score !== undefined && dto.score !== null) {
-        submission.score = dto.score;
+      submission.score = dto.score;
     }
 
     if (dto.feedback !== undefined) {
-        submission.feedback = dto.feedback;
+      submission.feedback = dto.feedback;
     }
-    
+
     submission.reviewerId = reviewerId;
 
     const savedSubmission = await this.submissionTypeOrmRepo.save(submission);
@@ -128,7 +137,8 @@ export class SubmissionService {
   async findAll(
     searchDto: SearchSubmissionDto,
   ): Promise<PaginatedSubmissionsResponseDto> {
-    const { submissions, total } = await this.submissionCustomRepo.findAll(searchDto);
+    const { submissions, total } =
+      await this.submissionCustomRepo.findAll(searchDto);
 
     const submissionDtos = submissions.map(
       (submission) => new SubmissionResponseDto(submission),
@@ -144,8 +154,8 @@ export class SubmissionService {
 
   async findOne(id: string): Promise<SubmissionResponseDto> {
     const submission = await this.submissionTypeOrmRepo.findOne({
-        where: { id },
-        relations: ['student', 'lessonItem', 'class'] 
+      where: { id },
+      relations: ['student', 'lessonItem', 'class'],
     });
 
     if (!submission) {
@@ -158,7 +168,8 @@ export class SubmissionService {
   // --- GET MY SUBMISSIONS ---
   // Cần sửa lại logic này nếu muốn lấy theo class, hiện tại lấy tất cả lịch sử
   async findByStudentId(studentId: string): Promise<SubmissionResponseDto[]> {
-    const submissions = await this.submissionCustomRepo.findByStudentId(studentId);
+    const submissions =
+      await this.submissionCustomRepo.findByStudentId(studentId);
 
     return submissions.map(
       (submission) => new SubmissionResponseDto(submission),

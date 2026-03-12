@@ -1,5 +1,11 @@
 // src/modules/chat/database/message.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../auth/database/user.entity'; // Kiểm tra lại đường dẫn User
 import { Conversation } from './conversation.entity'; // 👇 Import Conversation từ file mới
@@ -18,7 +24,9 @@ export class Message {
   @ManyToOne(() => User, { eager: true })
   sender: User;
 
-  @ManyToOne(() => Conversation, (conversation) => conversation.messages, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Conversation, (conversation) => conversation.messages, {
+    onDelete: 'CASCADE',
+  })
   conversation: Conversation;
 
   @ApiProperty()
@@ -26,5 +34,5 @@ export class Message {
   created_at: Date;
 
   @Column({ default: false })
-  is_read: boolean
+  is_read: boolean;
 }

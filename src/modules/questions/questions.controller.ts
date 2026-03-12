@@ -1,11 +1,33 @@
-import { Controller, Post, Body, Get, Patch, Delete, Param, UseGuards, ParseUUIDPipe, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Patch,
+  Delete,
+  Param,
+  UseGuards,
+  ParseUUIDPipe,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { QuestionsService } from './questions.service';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { UserRole } from 'src/constant/enum'; // Nhớ đường dẫn enum
 import { RolesGuard } from '../../shared/guard/roles.guard';
-import { CreateBankQuestionDto, UpdateBankQuestionDto } from './dtos/questions.dto';
+import {
+  CreateBankQuestionDto,
+  UpdateBankQuestionDto,
+} from './dtos/questions.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Express } from 'express';
 
@@ -31,7 +53,10 @@ export class QuestionsController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Cập nhật câu hỏi' })
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateBankQuestionDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateBankQuestionDto,
+  ) {
     return this.questionsService.update(id, dto);
   }
 
@@ -43,7 +68,9 @@ export class QuestionsController {
 
   @Post('import')
   @UseInterceptors(FileInterceptor('file'))
-  @ApiOperation({ summary: 'Import Excel (Tự động chuyển đổi sang format mới)' })
+  @ApiOperation({
+    summary: 'Import Excel (Tự động chuyển đổi sang format mới)',
+  })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -52,7 +79,8 @@ export class QuestionsController {
         file: {
           type: 'string',
           format: 'binary',
-          description: 'Excel file: question_text, option_a...d, correct_answer',
+          description:
+            'Excel file: question_text, option_a...d, correct_answer',
         },
       },
     },

@@ -2,9 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsUUID, IsString } from 'class-validator';
 
 export class InitConversationDto {
-  @ApiProperty({ 
+  @ApiProperty({
     description: 'ID của người dùng mục tiêu',
-    example: 'uuid-user-id'
+    example: 'uuid-user-id',
   })
   @IsNotEmpty()
   @IsUUID()

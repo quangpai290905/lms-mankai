@@ -8,7 +8,10 @@ export class ChangePasswordDto {
   @IsString()
   oldPassword: string;
 
-  @ApiProperty({ example: 'newPassword@123', description: 'Mật khẩu mới (tối thiểu 8 ký tự)' })
+  @ApiProperty({
+    example: 'newPassword@123',
+    description: 'Mật khẩu mới (tối thiểu 8 ký tự)',
+  })
   @IsNotEmpty()
   @IsString()
   @MinLength(8, { message: 'Mật khẩu mới phải có ít nhất 8 ký tự' })

@@ -19,7 +19,10 @@ export class CoursesService {
   }
 
   // 2. LẤY DANH SÁCH KHÓA HỌC (PHÂN TRANG)
-  findAll(paginationOptions: { page: number; limit: number }): Promise<Course[]> {
+  findAll(paginationOptions: {
+    page: number;
+    limit: number;
+  }): Promise<Course[]> {
     const { page, limit } = paginationOptions;
 
     return this.courseRepository.find({
@@ -35,7 +38,7 @@ export class CoursesService {
     const course = await this.courseRepository.findOne({
       where: { id },
       relations: [
-        'classes',                  // ⬅ Lớp chứa khóa học
+        'classes', // ⬅ Lớp chứa khóa học
         'sessions',
         'sessions.lessons',
         'sessions.lessons.items',
@@ -85,11 +88,7 @@ export class CoursesService {
   async findFullCurriculum(id: string) {
     const course = await this.courseRepository.findOne({
       where: { id },
-      relations: [
-        'sessions',
-        'sessions.lessons',
-        'sessions.lessons.items',
-      ],
+      relations: ['sessions', 'sessions.lessons', 'sessions.lessons.items'],
       order: {
         sessions: {
           order: 'ASC',

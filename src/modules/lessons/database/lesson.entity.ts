@@ -25,8 +25,6 @@ export class Lesson {
   @Column({ type: 'int', default: 0 })
   order: number;
 
- 
-
   @ManyToOne(() => Session, (session) => session.lessons, {
     onDelete: 'CASCADE',
   })

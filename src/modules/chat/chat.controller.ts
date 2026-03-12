@@ -1,12 +1,16 @@
 import { Controller, Get, Post, Body, Req, UseGuards } from '@nestjs/common';
 import { ChatService } from './chat.service';
-import { InitConversationDto, SendMessageDto, MarkReadDto } from './dtos/chat.dto';
-import { AuthGuard } from '@nestjs/passport'; 
+import {
+  InitConversationDto,
+  SendMessageDto,
+  MarkReadDto,
+} from './dtos/chat.dto';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('09. Chat System')
-@ApiBearerAuth('JWT-auth') 
-@UseGuards(AuthGuard('jwt')) 
+@ApiBearerAuth('JWT-auth')
+@UseGuards(AuthGuard('jwt'))
 @Controller('chat')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
@@ -27,13 +31,20 @@ export class ChatController {
   @Post('init')
   @ApiOperation({ summary: 'Tạo chat thủ công (nếu cần)' })
   initConversation(@Body() dto: InitConversationDto, @Req() req) {
-    return this.chatService.createOrGetConversation(req.user.user_id, dto.targetUserId);
+    return this.chatService.createOrGetConversation(
+      req.user.user_id,
+      dto.targetUserId,
+    );
   }
 
   @Post('message')
   @ApiOperation({ summary: 'Gửi tin nhắn (REST)' })
   sendMessage(@Body() dto: SendMessageDto, @Req() req) {
-    return this.chatService.saveMessage(req.user.user_id, dto.conversationId, dto.content);
+    return this.chatService.saveMessage(
+      req.user.user_id,
+      dto.conversationId,
+      dto.content,
+    );
   }
 
   @Post('read')

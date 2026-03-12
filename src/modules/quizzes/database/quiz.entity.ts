@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { QuizResult } from './quiz-result.entity';
-import { QuizQuestionAssignment } from './quiz-question-assignment.entity'; 
+import { QuizQuestionAssignment } from './quiz-question-assignment.entity';
 
 @Entity('quizzes')
 export class Quiz {
@@ -11,19 +18,17 @@ export class Quiz {
   title: string;
 
   @Column()
-  duration: number; 
-
-
+  duration: number;
 
   @OneToMany(() => QuizQuestionAssignment, (assignment) => assignment.quiz)
   questionAssignments: QuizQuestionAssignment[];
-  
+
   @OneToMany(() => QuizResult, (result) => result.quiz)
   results: QuizResult[];
 
-  @CreateDateColumn({ name: 'created_at' }) 
+  @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' }) 
+  @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
 }

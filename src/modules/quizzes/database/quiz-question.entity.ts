@@ -1,6 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Index, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  Index,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { QuizQuestionAssignment } from './quiz-question-assignment.entity';
-import { QuestionType } from 'src/constant/enum'; 
+import { QuestionType } from 'src/constant/enum';
 
 @Entity('quiz_questions')
 export class QuizQuestion {
@@ -14,7 +22,6 @@ export class QuizQuestion {
   @Column({ length: 100, nullable: true })
   category: string;
 
- 
   @Column({
     type: 'enum',
     enum: QuestionType,
@@ -22,11 +29,9 @@ export class QuizQuestion {
   })
   type: QuestionType;
 
+  @Column({ type: 'json' })
+  answers: any;
 
-  @Column({ type: 'json' }) 
-  answers: any; 
-
- 
   @OneToMany(() => QuizQuestionAssignment, (assignment) => assignment.question)
   assignments: QuizQuestionAssignment[];
 

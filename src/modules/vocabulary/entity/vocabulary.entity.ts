@@ -18,15 +18,14 @@ export class Vocabulary {
   id: string;
 
   @Column()
-  word: string; 
+  word: string;
 
-  @Column() 
+  @Column()
   reading: string;
 
   @Column()
-  meaning: string; 
+  meaning: string;
 
-  
   @ManyToOne(() => Topic, (topic) => topic.vocabularies, {
     onDelete: 'CASCADE',
   })
@@ -36,7 +35,6 @@ export class Vocabulary {
   @Column()
   topic_id: string;
 
-  
   @ManyToMany(() => Kanji, (kanji) => kanji.vocabularies, {
     cascade: false,
   })

@@ -40,7 +40,9 @@ export class ResponseTransformInterceptor implements NestInterceptor {
     return next
       .handle()
       .pipe(
-        map(data => new ResponseSuccess(data, data?.total, data?.currentPage)),
+        map(
+          (data) => new ResponseSuccess(data, data?.total, data?.currentPage),
+        ),
       );
   }
 }

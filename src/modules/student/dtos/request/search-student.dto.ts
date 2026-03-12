@@ -18,7 +18,7 @@ export class SearchStudentDto {
   @IsOptional()
   @IsString()
   full_name?: string;
-  
+
   // --- THÊM MỚI TẠI ĐÂY ---
   @ApiPropertyOptional({ enum: UserRole, description: 'Lọc theo vai trò' })
   @IsOptional()
@@ -33,7 +33,12 @@ export class SearchStudentDto {
   @Min(1)
   page?: number = 1;
 
-  @ApiPropertyOptional({ description: 'Số lượng mục/trang', default: 10, minimum: 1, maximum: 100 })
+  @ApiPropertyOptional({
+    description: 'Số lượng mục/trang',
+    default: 10,
+    minimum: 1,
+    maximum: 100,
+  })
   @IsOptional()
   @Type(() => Number)
   @IsInt()

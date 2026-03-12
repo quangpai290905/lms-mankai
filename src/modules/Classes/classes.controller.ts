@@ -8,7 +8,7 @@ import {
   Delete,
   UseGuards,
   ParseUUIDPipe,
-  Request, 
+  Request,
 } from '@nestjs/common';
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dtos/create-class.dto';
@@ -73,8 +73,6 @@ export class ClassesController {
     return this.classesService.remove(id);
   }
 
-  
-
   @Post(':id/students')
   @ApiOperation({ summary: 'Thêm học viên vào lớp' })
   async addStudent(
@@ -90,7 +88,7 @@ export class ClassesController {
     return this.classesService.getStudentsByClass(classId);
   }
   @Delete(':classId/students/:studentId')
-  @Roles(UserRole.ADMIN, UserRole.TEACHER) 
+  @Roles(UserRole.ADMIN, UserRole.TEACHER)
   @ApiOperation({ summary: 'Xóa học viên khỏi lớp' })
   async removeStudent(
     @Param('classId') classId: string,

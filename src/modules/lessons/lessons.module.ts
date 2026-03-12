@@ -8,12 +8,10 @@ import { LessonItem } from './database/lesson-item.entity'; // 👈 Import Entit
 import { Quiz } from '../quizzes/database/quiz.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Lesson, Session, LessonItem, Quiz])
-  ],
+  imports: [TypeOrmModule.forFeature([Lesson, Session, LessonItem, Quiz])],
   controllers: [LessonsController],
   providers: [LessonsService],
   // 🔥 QUAN TRỌNG: Export TypeOrmModule để module khác dùng được Repository của LessonItem
-  exports: [TypeOrmModule, LessonsService], 
+  exports: [TypeOrmModule, LessonsService],
 })
 export class LessonsModule {}

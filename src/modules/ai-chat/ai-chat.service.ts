@@ -17,10 +17,10 @@ export class AiChatService {
     private messageRepo: Repository<AiChatMessage>,
   ) {
     this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    
-    // Bạn yêu cầu giữ model mạnh nhất. Hiện tại Google mới public 'gemini-1.5-pro' 
-    // hoặc 'gemini-2.0-flash-exp' (bản preview). 
-    // 'gemini-2.5' chưa có API chính thức nên sẽ gây lỗi 404. 
+
+    // Bạn yêu cầu giữ model mạnh nhất. Hiện tại Google mới public 'gemini-1.5-pro'
+    // hoặc 'gemini-2.0-flash-exp' (bản preview).
+    // 'gemini-2.5' chưa có API chính thức nên sẽ gây lỗi 404.
     // Tôi để tạm 'gemini-1.5-pro' để code chạy được, bạn có thể sửa lại string này.
     this.model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
   }
@@ -57,7 +57,7 @@ export class AiChatService {
     });
     await this.messageRepo.save(userMsg);
 
-    const history = session.messages.map(m => ({
+    const history = session.messages.map((m) => ({
       role: m.role === 'user' ? 'user' : 'model',
       parts: [{ text: m.content }],
     }));
@@ -105,9 +105,11 @@ export class AiChatService {
       history: [...history],
     });
 
-    const result = await chat.sendMessage(systemInstruction + "\nUser: " + userText);
+    const result = await chat.sendMessage(
+      systemInstruction + '\nUser: ' + userText,
+    );
     const responseText = result.response.text();
-    
+
     const cleanJson = responseText.replace(/```json|```/g, '').trim();
     let aiData;
     try {
@@ -124,12 +126,12 @@ export class AiChatService {
       }
     } catch (e) {
       // Fallback: Nếu không parse được JSON, cố gắng làm sạch text thô nhất có thể
-      console.error("JSON Parse Error:", e);
+      console.error('JSON Parse Error:', e);
       const cleanText = responseText.replace(/```json|```/g, '').trim();
-      aiData = { 
-        reply: cleanText, 
-        correction: null, 
-        translation: "" 
+      aiData = {
+        reply: cleanText,
+        correction: null,
+        translation: '',
       };
     }
 
@@ -144,13 +146,13 @@ export class AiChatService {
 
     return aiMsg;
   }
-  
+
   async getSession(id: number) {
-      return this.sessionRepo.findOne({ 
-        where: { id }, 
-        relations: ['messages'],
-        order: { messages: { id: 'ASC' } } as any 
-      });
+    return this.sessionRepo.findOne({
+      where: { id },
+      relations: ['messages'],
+      order: { messages: { id: 'ASC' } } as any,
+    });
   }
 
   async getTextToSpeech(text: string, lang: string): Promise<any> {
@@ -162,7 +164,7 @@ export class AiChatService {
         responseType: 'stream',
         headers: {
           'User-Agent': 'Mozilla/5.0',
-          'Referer': 'http://translate.google.com/',
+          Referer: 'http://translate.google.com/',
         },
       });
       return response.data;

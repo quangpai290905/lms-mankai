@@ -62,10 +62,10 @@ export class User {
   hashed_refresh_token: string;
 
   // Học viên → Enrollment
-  @OneToMany(() => Enrollment, enrollment => enrollment.student)
+  @OneToMany(() => Enrollment, (enrollment) => enrollment.student)
   enrollments: Enrollment[];
 
   // Giáo viên → các lớp đang dạy
-  @ManyToMany(() => Class, cls => cls.teachers)
+  @ManyToMany(() => Class, (cls) => cls.teachers)
   teaching_classes: Class[];
 }

@@ -1,5 +1,17 @@
 // src/modules/quizzes/quizzes.controller.ts
-import { Controller, Post, Body, Param, UseGuards, Get, Patch, Delete, ParseUUIDPipe, Put, Query } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  Get,
+  Patch,
+  Delete,
+  ParseUUIDPipe,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { QuizzesService } from './quizzes.service';
 import { GetUser } from '../../shared/decorators/get-user.decorator';
@@ -7,12 +19,19 @@ import { User } from '../auth/database/user.entity';
 import { UserRole } from 'src/constant/enum';
 import { SubmitQuizDto } from './dtos/submit-quiz.dto';
 // --- THÊM ApiOperation, ApiBody ---
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiParam, ApiResponse, ApiBody } from '@nestjs/swagger'; 
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiParam,
+  ApiResponse,
+  ApiBody,
+} from '@nestjs/swagger';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { RolesGuard } from '../../shared/guard/roles.guard';
 import { CreateQuizDto } from './dtos/create-quiz.dto';
 import { UpdateQuizDto } from './dtos/update-quiz.dto';
-import { AssignQuestionDto } from './dtos/assign-question.dto'; 
+import { AssignQuestionDto } from './dtos/assign-question.dto';
 
 @ApiTags('08. Quizzes')
 @ApiBearerAuth('JWT-auth')
@@ -30,16 +49,19 @@ export class QuizzesController {
     return this.quizzesService.create(createQuizDto);
   }
   @Get()
-@Roles(UserRole.ADMIN, UserRole.TEACHER)
-@UseGuards(RolesGuard)
-@ApiOperation({ summary: 'Lấy danh sách tất cả quiz' })
-findAll() {
-  return this.quizzesService.findAll(); 
-}
+  @Roles(UserRole.ADMIN, UserRole.TEACHER)
+  @UseGuards(RolesGuard)
+  @ApiOperation({ summary: 'Lấy danh sách tất cả quiz' })
+  findAll() {
+    return this.quizzesService.findAll();
+  }
   @Get(':id')
-  @ApiOperation({ summary: 'Lấy thông tin chi tiết một bài quiz (và các câu hỏi của nó)' })
+  @ApiOperation({
+    summary: 'Lấy thông tin chi tiết một bài quiz (và các câu hỏi của nó)',
+  })
   findOne(@Param('id', ParseUUIDPipe) id: string, @GetUser() user: User) {
-    const includeAnswers = user.role === UserRole.ADMIN || user.role === UserRole.TEACHER;
+    const includeAnswers =
+      user.role === UserRole.ADMIN || user.role === UserRole.TEACHER;
     return this.quizzesService.findOne(id, includeAnswers);
   }
 
@@ -50,7 +72,10 @@ findAll() {
   @ApiOperation({ summary: 'Cập nhật thông tin quiz (Admin, Teacher)' })
   @ApiBody({ type: UpdateQuizDto })
   // --- KẾT THÚC THÊM MỚI ---
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() updateQuizDto: UpdateQuizDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateQuizDto: UpdateQuizDto,
+  ) {
     return this.quizzesService.update(id, updateQuizDto);
   }
 
@@ -70,23 +95,26 @@ findAll() {
   @ApiBody({ type: SubmitQuizDto })
   // --- KẾT THÚC THÊM MỚI ---
   submitQuiz(
-    @Param('id', ParseUUIDPipe) quizId: string, 
+    @Param('id', ParseUUIDPipe) quizId: string,
     @GetUser() user: User,
     @Body() submitQuizDto: SubmitQuizDto,
   ) {
-    return this.quizzesService.submitAndGradeQuiz(user.user_id, quizId, submitQuizDto);
+    return this.quizzesService.submitAndGradeQuiz(
+      user.user_id,
+      quizId,
+      submitQuizDto,
+    );
   }
-
-
 
   @Put(':quizId/questions') // <-- ĐỔI SANG PUT VÀ THAY ĐỔI ROUTE
   @Roles(UserRole.ADMIN, UserRole.TEACHER)
   @UseGuards(RolesGuard)
-  @ApiOperation({ 
-    summary: 'Gán câu hỏi cho quiz' 
+  @ApiOperation({
+    summary: 'Gán câu hỏi cho quiz',
   })
   @ApiBody({ type: AssignQuestionDto }) // <-- Đã thêm
-  updateQuizQuestions( // <-- Đổi tên method
+  updateQuizQuestions(
+    // <-- Đổi tên method
     @Param('quizId', ParseUUIDPipe) quizId: string,
     @Body() assignDto: AssignQuestionDto, // <-- Vẫn dùng DTO mảng
   ) {
@@ -108,7 +136,7 @@ findAll() {
   @ApiOperation({ summary: 'Lấy danh sách kết quả làm bài của Quiz' })
   async getQuizResults(
     @Param('quizId', ParseUUIDPipe) quizId: string,
-    @Query('lessonItemId') lessonItemId?: string // Optional filter
+    @Query('lessonItemId') lessonItemId?: string, // Optional filter
   ) {
     return this.quizzesService.getResultsByQuizId(quizId);
   }

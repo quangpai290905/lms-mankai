@@ -6,9 +6,7 @@ import { Topic } from '../modules/topic/entity/topic.entity';
 import { SeedService } from './seed.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Kanji, Vocabulary, Topic]),
-  ],
+  imports: [TypeOrmModule.forFeature([Kanji, Vocabulary, Topic])],
   providers: [SeedService],
 })
 export class SeedModule {}

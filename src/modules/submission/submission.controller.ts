@@ -7,7 +7,7 @@ import {
   Query,
   UseGuards,
   Request,
-  Patch
+  Patch,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -77,7 +77,11 @@ export class SubmissionController {
   @ApiOperation({ summary: 'Chấm điểm bài nộp (Admin/Teacher)' })
   @ApiParam({ name: 'id', description: 'ID bài nộp' })
   @ApiBody({ type: GradeSubmissionDto })
-  @ApiResponse({ status: 200, description: 'Chấm điểm thành công', type: SubmissionResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Chấm điểm thành công',
+    type: SubmissionResponseDto,
+  })
   async gradeSubmission(
     @Param('id') id: string,
     @Body() dto: GradeSubmissionDto,

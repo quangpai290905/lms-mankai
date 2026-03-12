@@ -78,17 +78,14 @@ export class TopicController {
   @Roles(UserRole.ADMIN, UserRole.TEACHER) // ✅ Phân quyền chuẩn
   @UseGuards(RolesGuard)
   @ApiOperation({ summary: 'Cập nhật topic (Admin, Teacher)' })
-  update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() dto: UpdateTopicDto,
-  ) {
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateTopicDto) {
     return this.topicService.update(id, dto);
   }
 
   // 🧹 HARD DELETE (CHỈ ADMIN)
   // Xóa cứng rất nguy hiểm nên chỉ để Admin
   @Delete(':id')
-  @Roles(UserRole.ADMIN) 
+  @Roles(UserRole.ADMIN)
   @UseGuards(RolesGuard)
   @ApiOperation({ summary: 'Xóa VĨNH VIỄN topic (Admin only)' })
   remove(@Param('id', ParseUUIDPipe) id: string) {

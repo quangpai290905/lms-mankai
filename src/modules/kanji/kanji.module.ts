@@ -12,8 +12,8 @@ import { KanjiService } from './kanji.service';
   controllers: [KanjiController],
   providers: [KanjiService],
   exports: [
-    KanjiService,   // Export để VocabularyService có thể gọi hàm find/create của Kanji
-    TypeOrmModule,  // Export để module khác dùng được repository Kanji nếu cần
+    KanjiService, // Export để VocabularyService có thể gọi hàm find/create của Kanji
+    TypeOrmModule, // Export để module khác dùng được repository Kanji nếu cần
   ],
 })
 export class KanjiModule {}

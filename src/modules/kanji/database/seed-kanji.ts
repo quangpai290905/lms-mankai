@@ -27,7 +27,7 @@ async function bootstrap() {
       // Dòng 1 là Onyomi (Katakana), Dòng 2 là Kunyomi (Hiragana)
       let onyomi = '';
       let kunyomi = '';
-      
+
       if (item.readings) {
         const parts = item.readings.split('\n');
         onyomi = parts[0] || ''; // Lấy dòng đầu
@@ -36,8 +36,8 @@ async function bootstrap() {
 
       // 2. Xử lý Meanings (Tách dấu chấm phẩy ;)
       // Ví dụ JSON: "ONE; "one" radical"
-      const meanings = item.meanings 
-        ? item.meanings.split(';').map(m => m.trim()) // Tách và xóa khoảng trắng thừa
+      const meanings = item.meanings
+        ? item.meanings.split(';').map((m) => m.trim()) // Tách và xóa khoảng trắng thừa
         : [];
 
       // 3. Tạo DTO chuẩn
@@ -47,13 +47,12 @@ async function bootstrap() {
         kunyomi: kunyomi,
         meanings: meanings,
         mnemonic: item.mnemonic, // ✅ Lấy thêm trường này
-        jlpt: 'Unknown' // Vì file JSON không có, tạm để Unknown hoặc N/A
+        jlpt: 'Unknown', // Vì file JSON không có, tạm để Unknown hoặc N/A
       };
 
       // 4. Gọi service lưu (Nếu trùng kanji thì bỏ qua hoặc update tùy logic của bạn)
       // Bạn nên sửa service create để dùng upsert (nếu có rồi thì update) sẽ hay hơn
       await kanjiService.create(kanjiDto);
-      
     } catch (error) {
       console.error(`❌ Lỗi nhập chữ ${item.kanji}:`, error.message);
     }

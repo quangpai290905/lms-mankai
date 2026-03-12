@@ -13,7 +13,7 @@ import { Enrollment } from '../classes/database/enrollment.entity';
 @Module({
   imports: [
     // 👇 Thêm Enrollment vào danh sách
-    TypeOrmModule.forFeature([Conversation, Message, User, Enrollment])
+    TypeOrmModule.forFeature([Conversation, Message, User, Enrollment]),
   ],
   controllers: [ChatController],
   providers: [ChatService, ChatGateway],

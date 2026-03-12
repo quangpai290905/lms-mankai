@@ -32,7 +32,12 @@ export class KanjiService {
   }
 
   // 🔍 TÌM KIẾM & LỌC (Phục vụ tra từ điển)
-  async findAll(params: { jlpt?: string; search?: string; page?: number; limit?: number }) {
+  async findAll(params: {
+    jlpt?: string;
+    search?: string;
+    page?: number;
+    limit?: number;
+  }) {
     const { jlpt, search, page = 1, limit = 20 } = params;
 
     const query = this.kanjiRepo.createQueryBuilder('kanji');
@@ -78,7 +83,7 @@ export class KanjiService {
 
   async importBulk(dtos: CreateKanjiDto[]) {
     const results = [];
-    
+
     // Duyệt qua từng phần tử trong mảng JSON gửi lên
     for (const dto of dtos) {
       // Kiểm tra xem chữ này có chưa (tránh trùng lặp)
@@ -91,14 +96,14 @@ export class KanjiService {
         // Nếu chưa -> Tạo mới
         kanji = this.kanjiRepo.create(dto);
       }
-      
+
       const saved = await this.kanjiRepo.save(kanji);
       results.push(saved);
     }
 
     return {
       message: `Đã xử lý ${results.length} chữ Kanji`,
-      data: results
+      data: results,
     };
   }
 }

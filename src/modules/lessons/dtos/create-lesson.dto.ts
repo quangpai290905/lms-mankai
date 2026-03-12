@@ -1,8 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, IsUUID, IsNumber } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+  IsNumber,
+} from 'class-validator';
 
 export class CreateLessonDto {
-  @ApiProperty({ description: 'Tiêu đề của bài học', example: 'Bài 1: Giới thiệu' })
+  @ApiProperty({
+    description: 'Tiêu đề của bài học',
+    example: 'Bài 1: Giới thiệu',
+  })
   @IsString()
   @IsNotEmpty()
   title: string;
@@ -16,6 +25,6 @@ export class CreateLessonDto {
   @IsUUID()
   @IsNotEmpty()
   sessionId: string;
-  
+
   // ❌ ĐÃ XÓA type
 }

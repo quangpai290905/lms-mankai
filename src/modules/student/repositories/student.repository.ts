@@ -19,7 +19,9 @@ export class StudentRepository {
     return this.studentRepository.save(student);
   }
 
-  async findAll(searchDto: SearchStudentDto): Promise<{ students: User[]; total: number }> {
+  async findAll(
+    searchDto: SearchStudentDto,
+  ): Promise<{ students: User[]; total: number }> {
     const { search, email, full_name, role, page = 1, limit = 10 } = searchDto;
     const skip = (page - 1) * limit;
 
@@ -32,11 +34,20 @@ export class StudentRepository {
       );
     }
 
-    if (email) queryBuilder.andWhere('student.email LIKE :email', { email: `%${email}%` });
-    if (full_name) queryBuilder.andWhere('student.full_name LIKE :full_name', { full_name: `%${full_name}%` });
+    if (email)
+      queryBuilder.andWhere('student.email LIKE :email', {
+        email: `%${email}%`,
+      });
+    if (full_name)
+      queryBuilder.andWhere('student.full_name LIKE :full_name', {
+        full_name: `%${full_name}%`,
+      });
     if (role) queryBuilder.andWhere('student.role = :role', { role });
 
-    const [students, total] = await queryBuilder.skip(skip).take(limit).getManyAndCount();
+    const [students, total] = await queryBuilder
+      .skip(skip)
+      .take(limit)
+      .getManyAndCount();
     return { students, total };
   }
 
@@ -48,7 +59,11 @@ export class StudentRepository {
   async findOneWithCourses(user_id: string): Promise<User | null> {
     return this.studentRepository.findOne({
       where: { user_id },
-      relations: ['enrollments', 'enrollments.class', 'enrollments.class.courses'],
+      relations: [
+        'enrollments',
+        'enrollments.class',
+        'enrollments.class.courses',
+      ],
     });
   }
 
@@ -57,7 +72,9 @@ export class StudentRepository {
   }
 
   async findByStudentCode(studentCode: string): Promise<User | null> {
-    return this.studentRepository.findOne({ where: { student_code: studentCode } });
+    return this.studentRepository.findOne({
+      where: { student_code: studentCode },
+    });
   }
 
   async findLastStudentCode(): Promise<string | null> {
@@ -70,7 +87,10 @@ export class StudentRepository {
     return students[0]?.student_code || null;
   }
 
-  async update(id: string, updateStudentDto: UpdateStudentDto): Promise<User | null> {
+  async update(
+    id: string,
+    updateStudentDto: UpdateStudentDto,
+  ): Promise<User | null> {
     await this.studentRepository.update(id, updateStudentDto);
     return this.findOne(id);
   }

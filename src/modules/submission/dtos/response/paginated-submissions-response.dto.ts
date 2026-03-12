@@ -20,4 +20,3 @@ export class PaginatedSubmissionsResponseDto {
     this.totalPages = Math.ceil(total / limit);
   }
 }
-

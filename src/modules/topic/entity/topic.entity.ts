@@ -5,7 +5,6 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
- 
 } from 'typeorm';
 import { Vocabulary } from '../../vocabulary/entity/vocabulary.entity';
 
@@ -20,15 +19,12 @@ export class Topic {
   @Column({ nullable: true })
   description: string;
 
-
   @Column({ default: 'N5' })
   level: string;
 
-  @OneToMany(
-    () => Vocabulary,
-    (vocabulary) => vocabulary.topic,
-    { cascade: true }, 
-  )
+  @OneToMany(() => Vocabulary, (vocabulary) => vocabulary.topic, {
+    cascade: true,
+  })
   vocabularies: Vocabulary[];
 
   @CreateDateColumn()
@@ -36,6 +32,4 @@ export class Topic {
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  
 }

@@ -11,7 +11,6 @@ import { User } from './database/user.entity';
 import { JwtStrategy } from './jwt.strategy';
 import { JwtRefreshStrategy } from './jwt-refresh.strategy';
 
-
 import { JwtAuthGuard } from '../../shared/guard/auth.guard';
 import { RolesGuard } from 'src/shared/guard/roles.guard';
 
@@ -39,11 +38,6 @@ import { RolesGuard } from 'src/shared/guard/roles.guard';
     JwtAuthGuard,
     RolesGuard,
   ],
-  exports: [
-    PassportModule,
-    JwtModule,
-    JwtAuthGuard,
-    RolesGuard,
-  ],
+  exports: [PassportModule, JwtModule, JwtAuthGuard, RolesGuard],
 })
 export class AuthModule {}

@@ -19,8 +19,6 @@ export async function seedVocabulary(dataSource: DataSource) {
   ];
 
   for (const v of data) {
-    await vocabRepo.save(
-      vocabRepo.create({ ...v, topic }),
-    );
+    await vocabRepo.save(vocabRepo.create({ ...v, topic }));
   }
 }

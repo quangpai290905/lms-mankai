@@ -7,9 +7,7 @@ import { VocabularyController } from './vocabulary.controller';
 import { VocabularyService } from './vocabulary.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Vocabulary, Topic, Kanji]),
-  ],
+  imports: [TypeOrmModule.forFeature([Vocabulary, Topic, Kanji])],
   controllers: [VocabularyController],
   providers: [VocabularyService],
 })

@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, ValidateNested, IsUUID, IsOptional } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  ValidateNested,
+  IsUUID,
+  IsOptional,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 class AnswerDto {
@@ -9,12 +15,13 @@ class AnswerDto {
   question_id: string;
 
   // SỬA: Bỏ @IsString() để chấp nhận cả string, number, hoặc object (cho điền từ)
-  @ApiProperty({ 
-    description: "Đáp án người dùng chọn. Có thể là string (trắc nghiệm) hoặc object {index, answer} (điền từ)", 
-    example: "Đáp án A" 
+  @ApiProperty({
+    description:
+      'Đáp án người dùng chọn. Có thể là string (trắc nghiệm) hoặc object {index, answer} (điền từ)',
+    example: 'Đáp án A',
   })
   @IsNotEmpty()
-  selected_answer: any; 
+  selected_answer: any;
 }
 
 export class SubmitQuizDto {
@@ -24,7 +31,10 @@ export class SubmitQuizDto {
   @Type(() => AnswerDto)
   answers: AnswerDto[];
 
-  @ApiProperty({ description: 'ID của LessonItem đang làm bài', required: false })
+  @ApiProperty({
+    description: 'ID của LessonItem đang làm bài',
+    required: false,
+  })
   @IsUUID()
   @IsOptional()
   lessonItemId?: string;

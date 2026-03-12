@@ -12,7 +12,12 @@ import {
   Query,
   ParseArrayPipe,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiTags,
+  ApiBearerAuth,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
 import { VocabularyService } from './vocabulary.service';

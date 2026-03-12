@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOptionsWhere, IsNull, In } from 'typeorm';
-import { LessonProgress, LessonStatus } from './database/lesson-progress.entity';
+import {
+  LessonProgress,
+  LessonStatus,
+} from './database/lesson-progress.entity';
 import { UpsertLessonProgressDto } from './dtos/upsert-progress.dto';
 import { QueryLessonProgressDto } from './dtos/query-progress.dto';
 import { LessonItem } from '../lessons/database/lesson-item.entity';
@@ -49,11 +52,10 @@ export class ProgressService {
       existing.lessonItemId = lessonItemId;
       existing.classId = classId ?? null;
       if (existing.status === LessonStatus.COMPLETED) {
-
       } else {
-         if (status) existing.status = status;
+        if (status) existing.status = status;
       }
-     
+
       if (typeof percentage === 'number') {
         existing.percentage = Math.max(existing.percentage, percentage);
       }
@@ -79,7 +81,8 @@ export class ProgressService {
   }
 
   async get(query: QueryLessonProgressDto) {
-    const { userId, courseId, sessionId, lessonId, lessonItemId, classId } = query;
+    const { userId, courseId, sessionId, lessonId, lessonItemId, classId } =
+      query;
 
     const where: FindOptionsWhere<LessonProgress> = { userId };
 
@@ -102,18 +105,22 @@ export class ProgressService {
     return this.repo.find({ where, order: { updatedAt: 'DESC' } });
   }
 
-  async getClassProgress(classId: string, studentIds: string[], courseIds: string[]) {
+  async getClassProgress(
+    classId: string,
+    studentIds: string[],
+    courseIds: string[],
+  ) {
     // 1. Tính TỔNG SỐ BÀI HỌC (Total Items) cho từng khóa
     // Chạy song song để nhanh hơn
     const coursesTotalItems = await Promise.all(
       courseIds.map(async (cId) => {
         const total = await this.lessonItemRepo.count({
           where: {
-            lesson: { session: { course: { id: cId } } } // Relation: Item -> Lesson -> Session -> Course
-          }
+            lesson: { session: { course: { id: cId } } }, // Relation: Item -> Lesson -> Session -> Course
+          },
         });
         return { courseId: cId, total };
-      })
+      }),
     );
 
     // 2. Dùng QueryBuilder để đếm số bài COMPLETED, Group theo User và Course
@@ -140,13 +147,14 @@ export class ProgressService {
       coursesTotalItems.forEach(({ courseId, total }) => {
         // Tìm bản ghi tiến độ của user này trong khóa này từ kết quả raw
         const found = rawProgress.find(
-          (p) => p.userId === sId && p.courseId === courseId
+          (p) => p.userId === sId && p.courseId === courseId,
         );
 
         const completedCount = found ? parseInt(found.completedCount, 10) : 0;
-        
+
         // Tránh chia cho 0
-        const percent = total > 0 ? Math.round((completedCount / total) * 100) : 0;
+        const percent =
+          total > 0 ? Math.round((completedCount / total) * 100) : 0;
 
         userProgressList.push({ courseId, percent });
       });

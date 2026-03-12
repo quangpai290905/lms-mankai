@@ -8,7 +8,10 @@ import {
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdateStudentDto {
-  @ApiPropertyOptional({ example: 'newemail@example.com', description: 'Email mới' })
+  @ApiPropertyOptional({
+    example: 'newemail@example.com',
+    description: 'Email mới',
+  })
   @IsOptional()
   @IsEmail({}, { message: 'Email không hợp lệ' })
   email?: string;
@@ -28,7 +31,10 @@ export class UpdateStudentDto {
   @IsString()
   address?: string;
 
-  @ApiPropertyOptional({ example: 'https://example.com/avatar.jpg', description: 'Link avatar' })
+  @ApiPropertyOptional({
+    example: 'https://example.com/avatar.jpg',
+    description: 'Link avatar',
+  })
   @IsOptional()
   @IsString()
   avatar?: string;
@@ -47,4 +53,3 @@ export class UpdateStudentDto {
   @IsString()
   gender?: string;
 }
-

@@ -1,5 +1,14 @@
 // src/modules/lesson-video/lesson-video.controller.ts
-import { Controller, Get, Post, Body, Param, Patch, Delete, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Patch,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 // --- THÊM ApiOperation, ApiBody ---
 import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
 import { LessonVideoService } from './lesson-video.service';
@@ -37,7 +46,10 @@ export class LessonVideoController {
   @ApiOperation({ summary: 'Cập nhật video bài học' })
   @ApiBody({ type: UpdateLessonVideoDto })
   // --- KẾT THÚC THÊM MỚI ---
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateLessonVideoDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateLessonVideoDto,
+  ) {
     return this.lessonVideoService.update(id, dto);
   }
 

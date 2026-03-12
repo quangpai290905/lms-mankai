@@ -1,11 +1,4 @@
-import {
-  IsInt,
-  IsOptional,
-  IsEnum,
-  Min,
-  Max,
-  IsUUID,
-} from 'class-validator';
+import { IsInt, IsOptional, IsEnum, Min, Max, IsUUID } from 'class-validator';
 import { LessonStatus } from '../database/lesson-progress.entity';
 
 export class UpsertLessonProgressDto {
